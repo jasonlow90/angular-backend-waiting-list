@@ -11,8 +11,7 @@ var Customer = new mongoose.Schema({
    },
    customerName: {
       type: String,
-      required: true,
-      unique: true
+      required: true
    },
    phone: {
       type: String,
