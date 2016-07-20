@@ -8,8 +8,10 @@ var secret = "waiting_list";
 function signin (req,res){
   Restaurant.findOne({restaurantEmail: req.body.restaurantEmail}, function(err, restaurant){
     if(err) res.status(402).json({message: err.errmsg});
-    if(req.body.password === undefined) res.status(401).json({message: "Password can't be empty"});
-    if(!restaurant) res.status(402).json({message: "Can't find restaurant"});
+    if(req.body.password === undefined) return res.status(401).json({message: "Password can't be empty"});
+    console.log(restaurant === null);
+
+    if(restaurant == null) return res.status(402).json({message: "Can't find restaurant"});
     restaurant.authenticate(req.body.password, function(err, isMatch){
       if(err) res.status(402).json({message: err.errmsg});
       if(isMatch){
@@ -28,7 +30,7 @@ function signin (req,res){
 
 function showRestaurants(req, res){
   Restaurant.find({}).populate('customers').exec(function (err, customer){
-    if(err) res.json({message: "Can't find restaurant/customer list"});
+    if(err) return res.json({message: "Can't find restaurant/customer list"});
     res.json(customer);
   });
 }
@@ -49,8 +51,8 @@ function addRestaurant(req, res){
     "restaurantEmail": req.body.restaurantEmail
   } , function(err, restaurant){
     // console.log(err);
-    if(err) res.status(401).json({message: err.errmsg});
-    res.json(restaurant);
+    if(err) return res.status(401).json({message: err.errmsg});
+    res.status(200).json(restaurant);
   });
 
 }
@@ -68,8 +70,8 @@ function updateRestaurant(req, res){
    "username": req.body.username,
    "restaurantEmail": req.body.restaurantEmail
   }, function (err, restaurant){
-    if(err) res.json({message: "Can't update restaurant"});
-    res.json(restaurant);
+    if(err) return res.status(401).json({message: "Can't update restaurant"});
+    return res.json(restaurant);
   });
 }
 
