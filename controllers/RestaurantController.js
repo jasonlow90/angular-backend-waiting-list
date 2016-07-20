@@ -34,6 +34,7 @@ function showRestaurants(req, res){
 }
 
 function addRestaurant(req, res){
+  console.log(req.body)
 
   Restaurant.create({
     "postcode": req.body.postcode,
@@ -47,7 +48,7 @@ function addRestaurant(req, res){
     "password": req.body.password,
     "restaurantEmail": req.body.restaurantEmail
   } , function(err, restaurant){
-    console.log(err);
+    // console.log(err);
     if(err) res.status(401).json({message: err.errmsg});
     res.json(restaurant);
   });

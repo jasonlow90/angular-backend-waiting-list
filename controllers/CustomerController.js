@@ -31,7 +31,6 @@ function addCustomer(req, res) {
   Restaurant.findOne({
     restaurantNameSuburb: req.params.restaurantNameSuburb
   }, function(err, restaurant) {
-    console.log(req.body)
     if (err) res.status(401).json({message: "couldnt find restaurant"});
     Customer.create({
       customerName: req.body.customerName,
@@ -40,8 +39,6 @@ function addCustomer(req, res) {
       eta: req.body.eta,
       _restaurant: restaurant._id
     }, function(err, customer) {
-      console.log(customer);
-      console.log("sex")
       if (err) res.status(401).json({message: err.errmsg});
       Restaurant.findOneAndUpdate({_id: restaurant._id},
         {$push:{customers: customer}}, function(err, restaurant) {
