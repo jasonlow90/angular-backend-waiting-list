@@ -7,11 +7,11 @@ var secret = "waiting_list";
 
 function signin (req,res){
   Restaurant.findOne({restaurantEmail: req.body.restaurantEmail}, function(err, restaurant){
-    if(err) res.status(402).json({message: err.errmsg});
+    if(err) return res.status(402).json({message: err.errmsg});
     if(req.body.password === undefined) return res.status(401).json({message: "Password can't be empty"});
     console.log(restaurant === null);
 
-    if(restaurant == null) return res.status(402).json({message: "Can't find restaurant"});
+    if(restaurant === null) return res.status(402).json({message: "Can't find restaurant"});
     restaurant.authenticate(req.body.password, function(err, isMatch){
       if(err) res.status(402).json({message: err.errmsg});
       if(isMatch){
